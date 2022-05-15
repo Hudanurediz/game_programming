@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Arabalardan kaç</title>
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="space,spacesship,car,game" />
+    <meta name="description" content="Arabalardan kaç" />
+    <meta name="author" content="Hüdanur EDİZ" />
+    <style>
+        body {
+            background-image: url("spacebg.png");
+        }
+        
+        div {
+            padding: 60px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div align="center">
+        <canvas id="myCanvas" style="background-color:#380740 ;"></canvas>
+    </div>
+    <script>
+        var bg = new Image();
+        var bg2 = new Image();
+        var chUzayli = [];
+        var car = [];
+        var car2 = [];
+        var spaceship = [];
+        bg2.src = "bg2.png";
+        bg.src = "bg2.png";
+        var cvs = document.getElementById("myCanvas");
+        var ctx = cvs.getContext("2d");
+        for (var i = 0; i <= 15; i++) {
+            chUzayli[i] = new Image();
+            chUzayli[i].src = "uzayli.png/aeff59d59bab41cea7552aa849591f76QxcY0L6HpPahs1JN-" + i + ".png";
+        }
+        for (var i = 0; i <= 5; i++) {
+            car[i] = new Image();
+            car[i].src = "carr.png/47a78e4937b0471f84c4e80bb704dbf4SvPsGMgobTyXkmXd-" + i + ".png";
+        }
+        for (var i = 0; i <= 1; i++) {
+            car2[i] = new Image();
+            car2[i].src = "carson.png/634d20982f1e42069b9f3e0aa17147fbSV0lmo7ctq1lhWVU-" + i + ".png";
+        }
+        for (var i = 0; i <= 4; i++) {
+            spaceship[i] = new Image();
+            spaceship[i].src = "spaceship.png/5be2c31d7cd34fad8d32778b7c7288ba1ZhAjabfrVSA920Q-" + i + ".png";
+        }
+        var gamespeed = 0;
+        var chSayac = 0;
+        var carSayac = 0;
+        var car2Sayac = 0;
+        var spaceshipSayac = 0;
+        var karakterGenislik = 80;
+        var karakterBoy = 60;
+        var karakterYkoordinat = 377;
+
+        function main() {
+            cvs.width = bg.width;
+            cvs.height = bg.height;
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+            ctx.drawImage(bg, gamespeed, 0, bg.width, bg.height, 0, 0, cvs.width, cvs.height);
+            ctx.drawImage(bg2, -(bg2.width) + gamespeed, 0, bg2.width, bg2.height, 0, 0, cvs.width, cvs.height);
+            ctx.drawImage(chUzayli[chSayac], 0, 0, chUzayli[chSayac].width, chUzayli[chSayac].height, gamespeed, karakterYkoordinat, karakterGenislik, karakterBoy);
+            ctx.drawImage(car[carSayac], 0, 0, car[carSayac].width, car[carSayac].height, bg.width - (gamespeed * 1.25), 350, 120, 110);
+            ctx.drawImage(spaceship[spaceshipSayac], 0, 0, spaceship[spaceshipSayac].width, spaceship[spaceshipSayac].height, 100, 160, 100, 104);
+            ctx.drawImage(spaceship[spaceshipSayac], 0, 0, spaceship[spaceshipSayac].width, spaceship[spaceshipSayac].height, 300, 70, 100, 104);
+            ctx.drawImage(spaceship[spaceshipSayac], 0, 0, spaceship[spaceshipSayac].width, spaceship[spaceshipSayac].height, 520, 200, 100, 104);
+            ctx.drawImage(spaceship[spaceshipSayac], 0, 0, spaceship[spaceshipSayac].width, spaceship[spaceshipSayac].height, 650, 40, 100, 104);
+            ctx.drawImage(car2[car2Sayac], 0, 0, car2[car2Sayac].width, car2[car2Sayac].height, gamespeed, 215, 220, 225);
+
+
+            console.log("arac konum x :" + (bg.width - (gamespeed * 1.25)));
+
+            console.log("arac y:" + 340);
+            console.log("karakter y:" + karakterYkoordinat);
+            if (gamespeed + karakterGenislik <= bg.width - (gamespeed * 1.25) + 1 && gamespeed + karakterGenislik >= bg.width - (gamespeed * 1.25) - 1 && karakterYkoordinat <= 340 + 70 && karakterYkoordinat >= 340 - 5) {
+                alert("Oyun bitti");
+                location.reload();
+                reset();
+            }
+            gamespeed++;
+
+            if (gamespeed % 4 == 0) {
+                chSayac++;
+                if (chSayac == 16) {
+                    chSayac = 0;
+                }
+            }
+            if (gamespeed % 2 == 0) {
+                carSayac++;
+                if (carSayac == 6) {
+                    carSayac = 0;
+                }
+            }
+            if (gamespeed % 4 == 0) {
+                car2Sayac++;
+                if (car2Sayac == 2) {
+                    car2Sayac = 0;
+                }
+            }
+            if (gamespeed % 4 == 0) {
+                spaceshipSayac++;
+                if (spaceshipSayac == 5) {
+                    spaceshipSayac = 0;
+                }
+            }
+
+            if (gamespeed == cvs.width) {
+                gamespeed = 0;
+            }
+            requestAnimationFrame(main);
+        }
+        document.addEventListener("keydown", hareketEtKarakter);
+
+        function hareketEtKarakter(event) {
+            switch (event.key) {
+                case "ArrowUp":
+                    YukarıGit();
+                    break;
+                case "ArrowDown":
+                    AsagiGit();
+                    break;
+                default:
+                    return;
+            }
+
+        }
+
+        function AsagiGit() {
+            if (karakterYkoordinat >= 392) {
+                return;
+            }
+            karakterYkoordinat += 7;
+            console.log(karakterYkoordinat);
+            karakterBoy += 2;
+            karakterGenislik += 2;
+        }
+
+        function YukarıGit() {
+            if (karakterYkoordinat <= 250) {
+                return;
+            }
+            karakterYkoordinat -= 7;
+            console.log(karakterYkoordinat);
+            karakterBoy -= 2;
+            karakterGenislik -= 2;
+        }
+        main();
+    </script>
+</body>
+
+</html>
